@@ -18,7 +18,7 @@ namespace Bileciki_ecommerce.Controllers
         public async Task<IActionResult> Index()
         {
             var cinemasData = await _context.Cinemas.ToListAsync();
-            return View();
+            return View(cinemasData);
         }
     }
 }

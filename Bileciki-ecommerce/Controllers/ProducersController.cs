@@ -18,7 +18,7 @@ namespace Bileciki_ecommerce.Controllers
         public async Task<IActionResult> Index()
         {
             var producersData = await _context.Producers.ToListAsync();
-            return View();
+            return View(producersData);
         }
     }
 }
