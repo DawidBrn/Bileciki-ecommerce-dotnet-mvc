@@ -28,11 +28,11 @@ namespace Bileciki_ecommerce.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Fullname,ProfilePictureURL,Bio")]Actor actor)
+        public async Task<IActionResult> Create([Bind("Fullname,ProfilePictureURL,Bio")] Actor actor)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(actor); 
+                return View(actor);
             }
             await _service.AddAsync(actor);
 
@@ -42,11 +42,46 @@ namespace Bileciki_ecommerce.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
-            if(actorDetails == null)
+            if (actorDetails == null)
             {
                 return NotFound();
             }
             return View(actorDetails);
+        }
+        public async Task<IActionResult> Update(int id)
+        {
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null)
+            {
+                return NotFound();
+            }
+            return View(actorDetails);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, Actor actor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(actor);
+            }
+            await _service.UpdateAsync(id, actor);
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null)
+            {
+                return NotFound();
+            }
+            return View(actorDetails);
+        }
+        [HttpPost,ActionName("Delete")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+             await  _service.DeleteAsync(id);
+            return RedirectToAction("Index");
         }
     }
 }

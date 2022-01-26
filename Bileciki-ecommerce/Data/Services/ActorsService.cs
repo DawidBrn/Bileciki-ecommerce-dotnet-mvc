@@ -20,9 +20,13 @@ namespace Bileciki_ecommerce.Data.Services
            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var actor = _context.Actors.FirstOrDefault(a => a.Id == id);
+            _context.Actors.Remove(actor);
+            await _context.SaveChangesAsync();
+            
+
         }
 
         public async Task<IEnumerable<Actor>> GetAllAsync()
@@ -37,9 +41,12 @@ namespace Bileciki_ecommerce.Data.Services
             return actor;
         }
 
-        public Actor Update(int id, Actor newActor)
+        public async Task<Actor> UpdateAsync(int id, Actor newActor)
         {
-            throw new System.NotImplementedException();
+            _context.Update(newActor);
+            await _context.SaveChangesAsync();
+            return newActor;
+
         }
     }
 }
