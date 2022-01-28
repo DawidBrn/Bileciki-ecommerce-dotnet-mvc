@@ -1,4 +1,5 @@
 ﻿using Bileciki_ecommerce.Data;
+using Bileciki_ecommerce.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,16 +9,16 @@ namespace Bileciki_ecommerce.Controllers
 {
     public class CinemasController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ICinemasService _service;
 
-        public CinemasController(AppDbContext context)
+        public CinemasController(ICinemasService service)
         {
-            _context = context;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var cinemasData = await _context.Cinemas.ToListAsync();
+            var cinemasData = await _service.GetAllAsync();
             return View(cinemasData);
         }
     }

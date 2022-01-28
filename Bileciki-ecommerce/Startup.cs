@@ -30,7 +30,8 @@ namespace Bileciki_ecommerce
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
             services.AddScoped<IActorsService,ActorsService>();
-
+            services.AddScoped<IProducersService,ProducersService>();
+            services.AddScoped<ICinemasService,CinemasService>();
             services.AddControllersWithViews();
 
 

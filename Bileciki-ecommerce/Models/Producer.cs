@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Bileciki_ecommerce.Data.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bileciki_ecommerce.Models
 {
-    public class Producer
+    public class Producer :IEntityBase
     {
         [Key]
         public int Id { get; set; }

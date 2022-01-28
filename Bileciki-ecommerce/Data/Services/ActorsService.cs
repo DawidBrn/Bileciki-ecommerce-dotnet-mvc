@@ -1,4 +1,5 @@
-﻿using Bileciki_ecommerce.Models;
+﻿using Bileciki_ecommerce.Data.Base;
+using Bileciki_ecommerce.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Bileciki_ecommerce.Data.Services
 {
-    public class ActorsService : IActorsService
+    public class ActorsService : EntityBaseRepository<Actor>, IActorsService
     {
-        private readonly AppDbContext _context;
 
-        public ActorsService(AppDbContext context)
-        {
-            _context = context;
-        }
+        public ActorsService(AppDbContext context) : base(context) { }
+
+
+        /**
         public async Task AddAsync(Actor actor)
         {
            await _context.Actors.AddAsync(actor);
@@ -28,8 +28,7 @@ namespace Bileciki_ecommerce.Data.Services
             
 
         }
-
-        public async Task<IEnumerable<Actor>> GetAllAsync()
+         public async Task<IEnumerable<Actor>> GetAllAsync()
         {
             var result =await _context.Actors.ToListAsync();
             return result;
@@ -40,13 +39,13 @@ namespace Bileciki_ecommerce.Data.Services
             var actor = await _context.Actors.FirstOrDefaultAsync(a => a.Id == id);
             return actor;
         }
-
+       
         public async Task<Actor> UpdateAsync(int id, Actor newActor)
         {
             _context.Update(newActor);
             await _context.SaveChangesAsync();
             return newActor;
 
-        }
+        }**/
     }
 }

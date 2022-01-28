@@ -65,7 +65,6 @@ namespace Bileciki_ecommerce.Controllers
                 return View(actor);
             }
             await _service.UpdateAsync(id, actor);
-
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Delete(int id)

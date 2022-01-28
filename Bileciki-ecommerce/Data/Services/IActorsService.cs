@@ -1,15 +1,18 @@
-﻿using Bileciki_ecommerce.Models;
+﻿using Bileciki_ecommerce.Data.Base;
+using Bileciki_ecommerce.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bileciki_ecommerce.Data.Services
 {
-    public interface IActorsService
+    public interface IActorsService :IEntityBaseRepository<Actor>
     {
+        /**
         Task<IEnumerable<Actor>> GetAllAsync();
         Task<Actor> GetByIdAsync(int id);
         Task AddAsync(Actor actor);
         Task<Actor> UpdateAsync(int id , Actor newActor);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id);**/
+
     }
 }
