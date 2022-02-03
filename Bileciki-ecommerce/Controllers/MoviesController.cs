@@ -1,4 +1,5 @@
 ﻿using Bileciki_ecommerce.Data;
+using Bileciki_ecommerce.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,17 +9,23 @@ namespace Bileciki_ecommerce.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IMoviesService _service;
 
-        public MoviesController(AppDbContext context)
+        public MoviesController(IMoviesService service)
         {
-            _context = context;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var moviesData = await _context.Movies.Include(n => n.Cinema).OrderBy(n => n.Name).ToListAsync();
+            var moviesData = await _service.GetAllAsync(n => n.Cinema); ;
             return View(moviesData);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var movieDetails = await _service.GetMovieByIdAsync(id);
+            return View(movieDetails);
         }
     }
 }
