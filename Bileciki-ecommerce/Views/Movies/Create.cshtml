@@ -1,0 +1,109 @@
+﻿@model Bileciki_ecommerce.Models.ViewModels.MovieVM
+@{@using Bileciki_ecommerce.Data
+    ViewData["Title"] = "Create new movie";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h3> Create a new movie</h3>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">   </div>
+                    <div class="row container-fluid">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label"></label>
+                                <input asp-for="StartDate" class="form-control" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label"></label>
+                                <input asp-for="EndDate" class="form-control" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageURL" class="control-label"></label>
+                                <input onchange="img_src()" id="ImageURL" asp-for="ImageURL" class="form-control" />
+                                <span asp-validation-for="ImageURL" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CinemaId" class="control-label"></label>
+                                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId">
+                                    
+                                </select>
+                                <span asp-validation-for="CinemaId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MovieCategory" class="control-label"></label>
+                                <select asp-for="MovieCategory" class="form-control" asp-items="Html.GetEnumSelectList<MovieCategory>()" >
+                                   
+                                </select>
+                                <span asp-validation-for="MovieCategory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProducerId" class="control-label"></label>
+                                <select asp-for="ProducerId" class="form-control" asp-items="ViewBag.ProducerId">
+                                    
+                                </select>
+                                <span asp-validation-for="ProducerId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ActorsId" class="control-label"></label>
+                                <select multiple asp-for="ActorsId" class="form-control" asp-items="ViewBag.ActorId">
+                                    
+                                </select>
+                                <span asp-validation-for="ActorsId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div><div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4 offset-4 text-center">
+                                <img style="width:100%;" id="ImageURLPreview" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                        <a class="btn btn-info" asp-action="Index">Go back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+<script>
+    function img_src() {
+        var img = document.getElementById("ImageURL");
+        var newimg = document.getElementById("ImageURLPreview");
+        newimg.src = img.value;
+    }
+
+</script>
+}
