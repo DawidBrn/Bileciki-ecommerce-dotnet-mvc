@@ -9,5 +9,8 @@ namespace Bileciki_ecommerce.Data.Services
     {
         Task<Movie> GetMovieByIdAsync(int id);
         Task<MovieDropdownsVM> GetMovieDropdownValues();
+
+        Task AddNewMovieAsync(MovieVM movieVM);
+        Task UpdateMovieAsync(MovieVM newMovie);
     }
 }
