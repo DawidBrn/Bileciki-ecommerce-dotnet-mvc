@@ -1,7 +1,9 @@
 using Bileciki_ecommerce.Data;
 using Bileciki_ecommerce.Data.Services;
+using Bileciki_ecommerce.Data.ShoppingCart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +35,11 @@ namespace Bileciki_ecommerce
             services.AddScoped<IProducersService,ProducersService>();
             services.AddScoped<ICinemasService,CinemasService>();
             services.AddScoped<IMoviesService,MoviesService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(x => ShoppingCart.GetShoppingCart(x));
+            services.AddSession();
+
             services.AddControllersWithViews();
 
 
@@ -55,6 +62,7 @@ namespace Bileciki_ecommerce
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
