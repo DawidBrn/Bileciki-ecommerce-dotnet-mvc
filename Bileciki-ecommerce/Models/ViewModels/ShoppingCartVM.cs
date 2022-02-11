@@ -1,4 +1,4 @@
-﻿using Bileciki_ecommerce.Data.ShoppingCart;
+﻿using Bileciki_ecommerce.Data;
 
 namespace Bileciki_ecommerce.Models.ViewModels
 {

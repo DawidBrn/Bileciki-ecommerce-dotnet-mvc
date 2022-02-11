@@ -23,6 +23,18 @@ namespace Bileciki_ecommerce.Controllers
             var moviesData = await _service.GetAllAsync(n => n.Cinema); ;
             return View(moviesData);
         }
+        public async Task<IActionResult> Filter(string searchString)
+        {
+            var moviesData = await _service.GetAllAsync(n => n.Cinema);
+
+            if (searchString != string.Empty)
+            {
+                var fileredMovies = moviesData.Where(x => x.Name.Contains(searchString) || x.Description.Contains(searchString));
+                return View("Index",fileredMovies);
+            }
+
+            return View(moviesData);
+        }
 
         public async Task<IActionResult> Details(int id)
         {

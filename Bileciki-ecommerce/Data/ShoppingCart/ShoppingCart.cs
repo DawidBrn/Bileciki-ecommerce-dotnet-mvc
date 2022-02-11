@@ -5,8 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Bileciki_ecommerce.Data.ShoppingCart
+namespace Bileciki_ecommerce.Data
 {
     public class ShoppingCart
     {
@@ -34,7 +35,7 @@ namespace Bileciki_ecommerce.Data.ShoppingCart
         public List<ShoppingCartItem> GetShoppingCartItems()
         {
             if (ShoppingCartItems == null)
-                return ShoppingCartItems = _context.ShoppingCartItems.Where(x => x.ShoppingCartId == ShoppingCartId).Include(x => x.Movie).ToList();
+                return ShoppingCartItems =  _context.ShoppingCartItems.Where(x => x.ShoppingCartId == ShoppingCartId).Include(x => x.Movie).ToList();
             return ShoppingCartItems;
             
         }
@@ -74,13 +75,21 @@ namespace Bileciki_ecommerce.Data.ShoppingCart
             {
                 if(shoppingCartItem.Amount > 1)
                     shoppingCartItem.Amount -= 1;
+                else _context.ShoppingCartItems.Remove(shoppingCartItem);
 
             }
             else
             {
-                _context.ShoppingCartItems.Remove(shoppingCartItem);
+                ClearShoppingCartAsync();
             }
             _context.SaveChanges();
+        }
+
+        public async Task ClearShoppingCartAsync()
+        {
+            var items = await _context.ShoppingCartItems.Where(x => x.ShoppingCartId == ShoppingCartId).ToListAsync();
+            _context.ShoppingCartItems.RemoveRange(items);
+            await _context.SaveChangesAsync();
         }
     }
 }
