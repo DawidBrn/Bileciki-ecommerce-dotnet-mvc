@@ -1,9 +1,13 @@
-﻿using Bileciki_ecommerce.Models;
+﻿using Bileciki_ecommerce.Data.Static;
+using Bileciki_ecommerce.Models;
+using Bileciki_ecommerce.Models.Indentity;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bileciki_ecommerce.Data
 {
@@ -11,17 +15,17 @@ namespace Bileciki_ecommerce.Data
     {
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
-            using(var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                 context.Database.EnsureCreated();
 
                 //seeding
                 //cinema
-                if(!context.Cinemas.Any())
+                if (!context.Cinemas.Any())
                 {
                     context.Cinemas.AddRange(new List<Cinema>()
-                    { 
+                    {
                      new Cinema()
                      {
                          Name = "Helios",
@@ -269,6 +273,58 @@ namespace Bileciki_ecommerce.Data
                         }
                     });
                     context.SaveChanges();
+                }
+            }
+        }
+
+        public static async Task IdentitySeedAsync(IApplicationBuilder applicationBuilder)
+        {
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync(UserRoles.AdminRole))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.AdminRole));
+                if (!await roleManager.RoleExistsAsync(UserRoles.UserRole))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.UserRole));
+
+                //users
+
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                var adminUser = await userManager.FindByEmailAsync("admin@bileciki.com");
+                if (adminUser == null)
+                {
+                    var appAdminUser = new ApplicationUser()
+                    {
+                        Fullname = "Admin User",
+                        UserName = "Admin",
+                        Email = "admin@bileciki.com",
+                        EmailConfirmed = true
+
+                    };
+                    await userManager.CreateAsync(appAdminUser, "Coding@123?");
+                    await userManager.AddToRoleAsync(appAdminUser, UserRoles.AdminRole);
+
+                }
+
+
+
+                var appUser = await userManager.FindByEmailAsync("user@bileciki.com");
+                if (appUser == null)
+                {
+                    var newAppUser = new ApplicationUser()
+                    {
+                        Fullname = "App User",
+                        UserName = "User",
+                        Email = "user@bileciki.com",
+                        EmailConfirmed = true
+
+                    };
+                    await userManager.CreateAsync(newAppUser, "Coding@123?");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.UserRole);
+
                 }
             }
         }

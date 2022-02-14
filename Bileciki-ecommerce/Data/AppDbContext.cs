@@ -1,9 +1,11 @@
 ﻿using Bileciki_ecommerce.Models;
+using Bileciki_ecommerce.Models.Indentity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bileciki_ecommerce.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -31,5 +33,6 @@ namespace Bileciki_ecommerce.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set;}
+        
     }
 }

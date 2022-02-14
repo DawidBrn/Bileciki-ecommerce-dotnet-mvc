@@ -1,9 +1,12 @@
 using Bileciki_ecommerce.Data;
 using Bileciki_ecommerce.Data.Services;
+using Bileciki_ecommerce.Models.Indentity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +41,15 @@ namespace Bileciki_ecommerce
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(x => ShoppingCart.GetShoppingCart(x));
+
+            //auth 
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddMemoryCache();
             services.AddSession();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
 
             services.AddControllersWithViews();
 
@@ -64,6 +75,8 @@ namespace Bileciki_ecommerce
             app.UseRouting();
             app.UseSession();
 
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -75,6 +88,7 @@ namespace Bileciki_ecommerce
 
             //seeding
             AppDbInit.Seed(app);
+            AppDbInit.IdentitySeedAsync(app).Wait();
         }
     }
 }
